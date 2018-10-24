@@ -1,0 +1,10 @@
+topics:
+- name    : rc
+  topic   : rc_teleop/cmd_vel
+  timeout : 0.5
+  priority: 10
+locks:
+- name    : manned
+  topic   : teleop/manned
+  timeout : 0.5
+  priority: 100
