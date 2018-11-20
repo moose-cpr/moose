@@ -6,6 +6,8 @@ moose_velocity_controller:
   type: "double_diff_drive_controller/DoubleDiffDriveController"
   drive_motor_joint: 'drive_motor'
   steer_motor_joint: 'steer_motor'
+  # left_wheel: ['front_left_wheel', 'front_mid_left_wheel', 'rear_mid_left_wheel', 'rear_left_wheel']
+  # right_wheel: ['front_right_wheel', 'front_mid_right_wheel', 'rear_mid_right_wheel', 'rear_right_wheel']
   publish_rate: 20
   pose_covariance_diagonal: [0.001, 0.001, 1000000.0, 1000000.0, 1000000.0, 0.03]
   twist_covariance_diagonal: [0.001, 0.001, 0.001, 1000000.0, 1000000.0, 0.03]
@@ -60,5 +62,3 @@ ekf_localization:
   odom_frame: odom
   base_link_frame: base_link
   world_frame: odom
-
-  two_d_mode: true

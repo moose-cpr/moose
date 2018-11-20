@@ -7,7 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   realtime_tools
   tf
   nav_msgs
-  roslaunch)
+)
 
 set(double_diff_drive_controller_sources
   src/double_diff_drive_controller.cpp
@@ -25,7 +25,8 @@ include_directories(
   include ${catkin_INCLUDE_DIRS}
 )
 
-add_library(double_diff_drive_controller ${double_diff_drive_controller_headers} ${double_diff_drive_controller_sources})
+add_library(double_diff_drive_controller
+  ${double_diff_drive_controller_headers} ${double_diff_drive_controller_sources})
 target_link_libraries(double_diff_drive_controller ${catkin_LIBRARIES})
 
 install(TARGETS double_diff_drive_controller

@@ -4,14 +4,17 @@
 
   <xacro:property name="PI" value="3.1415926535897931"/>
 
-  <xacro:property name="wheel_radius" value="0.06" />
-  <xacro:property name="wheel_width" value="0.25" />
-  <xacro:property name="wheel_mass" value="15" />
-  <xacro:property name="wheel_to_track_ratio" value="0.5962" />
+  <xacro:property name="wheel_radius" value="0.3175" />
+  <xacro:property name="wheel_width" value="0.303" />
+  <xacro:property name="wheel_mass" value="16.8" />
 
-  <xacro:property name="axle_x_offset" value="0.457367" />
-  <xacro:property name="axle_y_offset" value="0.0" />
-  <xacro:property name="axle_z_offset" value="-0.012977" />
+  <xacro:property name="front_axle_x_offset" value="1.0036" />
+  <xacro:property name="front_mid_axle_x_offset" value="0.33639" />
+  <xacro:property name="rear_mid_axle_x_offset" value="-0.33638" />
+  <xacro:property name="rear_axle_x_offset" value="-1.01123" />
+  <xacro:property name="axle_y_offset" value="0.6249" />
+  <xacro:property name="high_axle_z_offset" value="0.04115" />
+  <xacro:property name="low_axle_z_offset" value="0.01892" />
 
   <xacro:property name="chassis_length" value="2.9532" />
   <xacro:property name="chassis_width" value="1.416" />
@@ -39,7 +42,7 @@
   <material name="white"><color rgba="0.9 0.9 0.9 1.0" /></material>
   <material name="red"><color rgba="0.9 0.0 0.0 1.0" /></material>
 
-  <!-- <xacro:macro name="wheel" params="prefix side *joint_pose">
+  <xacro:macro name="wheel" params="prefix side *joint_pose">
     <link name="${prefix}_${side}_wheel_link">
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -47,59 +50,62 @@
         <xacro:wheel_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}" />
       </inertial>
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 ${PI/2}"/>
+        <origin xyz="0 ${wheel_width/2} 0" rpy="${PI/2} 0 0"/>
         <geometry>
           <mesh filename="package://moose_description/meshes/wheel.stl" />
         </geometry>
         <material name="dark_grey" />
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
         </geometry>
       </collision>
     </link>
-    <joint name="${prefix}_${side}_wheel_joint" type="continuous">
-      <parent link="${side}_diff_unit_link"/>
-      <child link="${side}_${prefix}_wheel_link"/>
+    <joint name="${prefix}_${side}_wheel" type="continuous">
+      <parent link="chassis_link"/>
+      <child link="${prefix}_${side}_wheel_link"/>
       <xacro:insert_block name="joint_pose" />
       <axis xyz="0 1 0"/>
     </joint>
-    <gazebo reference="${side}_${prefix}_wheel_link">
-      <selfCollide>false</selfCollide>
-      <mu1>0.9</mu1>
-      <mu2>0.5</mu2>
-      <kp value="10000000.0" />
-      <kd value="10.0" />
-      <fdir1 value="1 0 0" />
-      <material>Gazebo/Grey</material>
-    </gazebo>
-    <transmission name="${side}_${prefix}_wheel_trans">
+    <transmission name="${prefix}_${side}_wheel_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${side}_${prefix}_wheel_joint">
+      <joint name="${prefix}_${side}_wheel_joint">
         <hardwareInterface>VelocityJointInterface</hardwareInterface>
       </joint>
-      <actuator name="${side}_${prefix}_actuator">
+      <!-- <actuator name="${side}_${prefix}_actuator">
         <hardwareInterface>VelocityJointInterface</hardwareInterface>
         <mechanicalReduction>1</mechanicalReduction>
-      </actuator>
+      </actuator> -->
     </transmission>
-  </xacro:macro> -->
+  </xacro:macro>
 
 
-  <!-- <xacro:wheel prefix="front" side="left">
-    <origin xyz="${axle_x_offset*1} ${axle_y_offset*1} ${axle_z_offset}" rpy="0 0 0" />
+  <xacro:wheel prefix="front" side="left">
+    <origin xyz="${front_axle_x_offset} ${axle_y_offset*1} ${high_axle_z_offset}" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="front_mid" side="left">
+    <origin xyz="${front_mid_axle_x_offset} ${axle_y_offset*1} ${low_axle_z_offset}" rpy="0 0 0" />
   </xacro:wheel>
   <xacro:wheel prefix="front" side="right">
-    <origin xyz="${axle_x_offset*1} ${axle_y_offset*-1} ${axle_z_offset}" rpy="0 0 0" />
+    <origin xyz="${front_axle_x_offset} ${axle_y_offset*-1} ${high_axle_z_offset}" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="front_mid" side="right">
+    <origin xyz="${front_mid_axle_x_offset} ${axle_y_offset*-1} ${low_axle_z_offset}" rpy="0 0 0" />
   </xacro:wheel>
   <xacro:wheel prefix="rear" side="left">
-    <origin xyz="${axle_x_offset*-1} ${axle_y_offset*1} ${axle_z_offset}" rpy="0 0 0" />
+    <origin xyz="${rear_axle_x_offset} ${axle_y_offset*1} ${high_axle_z_offset}" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="rear_mid" side="left">
+    <origin xyz="${rear_mid_axle_x_offset} ${axle_y_offset*1} ${low_axle_z_offset}" rpy="0 0 0" />
   </xacro:wheel>
   <xacro:wheel prefix="rear" side="right">
-    <origin xyz="${axle_x_offset*-1} ${axle_y_offset*-1} ${axle_z_offset}" rpy="0 0 0" />
-  </xacro:wheel> -->
+    <origin xyz="${rear_axle_x_offset} ${axle_y_offset*-1} ${high_axle_z_offset}" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="rear_mid" side="right">
+    <origin xyz="${rear_mid_axle_x_offset} ${axle_y_offset*-1} ${low_axle_z_offset}" rpy="0 0 0" />
+  </xacro:wheel>
 
 
   <link name="base_link"></link>
@@ -168,7 +174,7 @@
       <geometry>
         <mesh filename="package://moose_description/meshes/top-deck.stl" />
       </geometry>
-      <material name="white"><color rgba="0.9 0.9 0.9 1.0" /></material>
+      <material name="yellow" />
     </visual>
   </link>
 
