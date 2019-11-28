@@ -240,29 +240,31 @@
     <child link="rear_top_chassis_link" />
   </joint>
 
-  <link name="generator_link">
-    <visual>
-      <geometry>
-        <mesh filename="package://moose_description/meshes/generator.stl" />
-      </geometry>
-      <material name="yellow" />
-    </visual>
-    <collision>
-      <geometry>
-        <mesh filename="package://moose_description/meshes/generator-collision.stl" />
-      </geometry>
-    </collision>
-  </link>
-  <gazebo reference="generator_link">
-      <selfCollide>false</selfCollide>
-      <material>Gazebo/Yellow</material>
-  </gazebo>
+  <xacro:if value="$(optenv MOOSE_GENERATOR 0)">
+    <link name="generator_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://moose_description/meshes/generator.stl" />
+        </geometry>
+        <material name="yellow" />
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://moose_description/meshes/generator-collision.stl" />
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="generator_link">
+        <selfCollide>false</selfCollide>
+        <material>Gazebo/Yellow</material>
+    </gazebo>
 
-  <joint name="generator_joint" type="fixed">
-    <origin xyz="-0.641204 0 0" rpy="0 0 0" />
-    <parent link="top_chassis_link"/>
-    <child link="generator_link" />
-  </joint>
+    <joint name="generator_joint" type="fixed">
+      <origin xyz="-0.641204 0 0" rpy="0 0 0" />
+      <parent link="top_chassis_link"/>
+      <child link="generator_link" />
+    </joint>
+  </xacro:if>
 
   <link name="imu_link" />
   <joint name="imu_link_joint" type="fixed">
