@@ -1,4 +1,8 @@
 topics:
+- name    : interactive_marker
+  topic   : twist_marker_server/cmd_vel
+  timeout : 0.5
+  priority: 6
 - name    : rc
   topic   : rc_teleop/cmd_vel
   timeout : 0.5

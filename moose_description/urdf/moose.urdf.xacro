@@ -57,7 +57,7 @@
         <material name="dark_grey" />
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
         <geometry>
           <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
         </geometry>
@@ -69,15 +69,24 @@
       <xacro:insert_block name="joint_pose" />
       <axis xyz="0 1 0"/>
     </joint>
+    <gazebo reference="${prefix}_${side}_wheel_link">
+      <selfCollide>false</selfCollide>
+      <mu1>0.3</mu1>
+      <mu2>0.3</mu2>
+      <kp value="10000000.0" />
+      <kd value="1.0" />
+      <fdir1 value="1 0 0" />
+      <material>Gazebo/Grey</material>
+    </gazebo>
     <transmission name="${prefix}_${side}_wheel_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${prefix}_${side}_wheel_joint">
-        <hardwareInterface>VelocityJointInterface</hardwareInterface>
+      <joint name="${prefix}_${side}_wheel">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
       </joint>
-      <!-- <actuator name="${side}_${prefix}_actuator">
-        <hardwareInterface>VelocityJointInterface</hardwareInterface>
+      <actuator name="${side}_${prefix}_actuator">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
         <mechanicalReduction>1</mechanicalReduction>
-      </actuator> -->
+      </actuator>
     </transmission>
   </xacro:macro>
 
@@ -130,9 +139,23 @@
       </geometry>
       <material name="dark_grey" />
     </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://moose_description/meshes/chassis-collision.stl" />
+      </geometry>
+    </collision>
   </link>
 
-  <link name="drive_motor_link"></link>
+  <link name="drive_motor_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia
+        ixx="0.01" ixy="0.0" ixz="0.0"
+        iyy="0.01" iyz="0.0"
+        izz="0.01" />
+    </inertial>
+  </link>
 
   <joint name="drive_motor" type="continuous">
     <origin xyz="0 0 0" rpy="0 0 0" />
@@ -150,7 +173,16 @@
     </actuator>
   </transmission>
 
-  <link name="steer_motor_link"></link>
+  <link name="steer_motor_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia
+        ixx="0.01" ixy="0.0" ixz="0.0"
+        iyy="0.01" iyz="0.0"
+        izz="0.01" />
+    </inertial>
+  </link>
 
   <joint name="steer_motor" type="continuous">
     <origin xyz="0 0 0" rpy="0 0 0" />
@@ -170,13 +202,21 @@
 
   <link name="top_chassis_link">
     <visual>
-      <origin xyz="0 0 -0.52705" rpy="0 0 0"/>
       <geometry>
         <mesh filename="package://moose_description/meshes/top-deck.stl" />
       </geometry>
       <material name="yellow" />
     </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://moose_description/meshes/top-deck-collision.stl" />
+      </geometry>
+    </collision>
   </link>
+  <gazebo reference="top_chassis_link">
+      <selfCollide>false</selfCollide>
+      <material>Gazebo/Yellow</material>
+  </gazebo>
 
   <joint name="top_link_joint" type="fixed">
     <origin xyz="0 0 0.52705" rpy="0 0 0" />
@@ -200,6 +240,31 @@
     <child link="rear_top_chassis_link" />
   </joint>
 
+  <xacro:if value="$(optenv MOOSE_GENERATOR 0)">
+    <link name="generator_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://moose_description/meshes/generator.stl" />
+        </geometry>
+        <material name="yellow" />
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://moose_description/meshes/generator-collision.stl" />
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="generator_link">
+        <selfCollide>false</selfCollide>
+        <material>Gazebo/Yellow</material>
+    </gazebo>
+
+    <joint name="generator_joint" type="fixed">
+      <origin xyz="-0.641204 0 0" rpy="0 0 0" />
+      <parent link="top_chassis_link"/>
+      <child link="generator_link" />
+    </joint>
+  </xacro:if>
 
   <link name="imu_link" />
   <joint name="imu_link_joint" type="fixed">
