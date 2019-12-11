@@ -2,8 +2,8 @@
 Changelog for package moose_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.0 (2019-12-11)
+------------------
 * Updated collisions,
 * Made the generator optional
 * Moved interactive markers to manned control and removed joy
