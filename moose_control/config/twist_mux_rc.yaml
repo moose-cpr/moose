@@ -3,6 +3,10 @@ topics:
   topic   : twist_marker_server/cmd_vel
   timeout : 0.5
   priority: 6
+- name    : joy
+  topic   : joy_teleop/cmd_vel
+  timeout : 0.5
+  priority: 8
 - name    : rc
   topic   : rc_teleop/cmd_vel
   timeout : 0.5
