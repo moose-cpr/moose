@@ -2,8 +2,8 @@
 Changelog for package moose_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.1 (2021-03-09)
+------------------
 * Add the legacy mode NS flag to the gazebo file. This gets rid of a warning when launching gazebo
 * Contributors: Chris I-B
 
