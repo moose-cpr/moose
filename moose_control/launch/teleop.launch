@@ -4,8 +4,8 @@
   <arg name="joy_dev" default="$(optenv MOOSE_JOY_DEV /dev/input/js0)" />
   <arg name="joy_teleop" default="$(optenv MOOSE_JOY_TELEOP false)" />
 
+  <rosparam command="load" file="$(find moose_control)/config/teleop.yaml" />
   <group ns="joy_teleop" if="$(arg joy_teleop)">
-    <rosparam command="load" file="$(find moose_control)/config/teleop.yaml" />
     <node pkg="joy" type="joy_node" name="joy_node">
       <param name="dev" value="$(arg joy_dev)" />
     </node>
