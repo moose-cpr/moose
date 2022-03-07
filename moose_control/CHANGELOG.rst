@@ -2,8 +2,8 @@
 Changelog for package moose_control
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.2 (2022-03-07)
+------------------
 * Move rosparam load outside the joy_teleop ns. (`#5 <https://github.com/moose-cpr/moose/issues/5>`_)
   * Move the joy parameters outside the joy_teleop ns to avoid duplicating the namespace. Resolves https://github.com/moose-cpr/moose/issues/4
   * Move the rosparam load back into the teleop namespace, remove the namespace from the yaml file
